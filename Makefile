@@ -7,7 +7,7 @@ setup:
 	php artisan key:gen --ansi
 	touch database/database.sqlite
 	php artisan migrate
-	npm install && npm run dev
+	npm install
 
 test:
 	php artisan test
