@@ -9,6 +9,19 @@ class Task extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+        'description',
+        'status_id',
+        'worker_id',
+        'author_id',
+    ];
+
     public function labels()
     {
         return $this->belongsToMany(Label::class)->withTimestamps();
