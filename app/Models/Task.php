@@ -13,4 +13,14 @@ class Task extends Model
     {
         return $this->belongsToMany(Label::class)->withTimestamps();
     }
+
+    public function worker()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function author()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
