@@ -42,12 +42,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function createdByMeTasks()
+    public function tasksCreatedByMe()
     {
         return $this->hasMany(Task::class, 'author_id');
     }
 
-    public function assignedToMeTasks()
+    public function tasksAssignedToMe()
     {
         return $this->hasMany(Task::class, 'worker_id');
     }
