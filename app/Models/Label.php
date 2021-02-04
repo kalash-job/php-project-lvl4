@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Label extends Model
 {
     use HasFactory;
+
+    public function tasks()
+    {
+        return $this->belongsToMany(Task::class)->withTimestamps();
+    }
 }
