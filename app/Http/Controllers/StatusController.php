@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Status;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class StatusController extends Controller
 {
@@ -15,7 +16,8 @@ class StatusController extends Controller
     public function index()
     {
         $statuses = Status::All();
-        return view('status.index', compact('statuses'));
+        $isAuth = Auth::check();
+        return view('status.index', compact('statuses', 'isAuth'));
     }
 
     /**
