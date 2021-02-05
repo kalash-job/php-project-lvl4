@@ -1,17 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1 class="mb-5">Статусы</h1>
+    <h1 class="mb-5">{{ __('tm.Statuses') }}</h1>
     <a href="{{route('task_statuses.create')}}" class="btn btn-primary">
-        Создать статус
+        {{ __('tm.Create status') }}
     </a>
     <table class="table mt-2">
         <thead>
         <tr>
-            <th>ID</th>
-            <th>Имя</th>
-            <th>Дата создания</th>
-            <th>Действия</th>
+            <th>{{ __('tm.ID') }}</th>
+            <th>{{ __('tm.Name') }}</th>
+            <th>{{ __('tm.Created') }}</th>
+            <th>{{ __('tm.Actions') }}</th>
         </tr>
         </thead>
 
@@ -25,13 +25,13 @@
                         <a
                             class="text-danger"
                             href="{{route('task_statuses.destroy', $status)}}"
-                            data-confirm="Вы уверены?"
+                            data-confirm="{{ __('tm.sure?') }}"
                             data-method="delete"
                         >
-                            Удалить
+                            {{ __('tm.Delete') }}
                         </a>
                         <a href="{{route('task_statuses.edit', $status)}}">
-                            Изменить
+                            {{ __('tm.Update') }}
                         </a>
                     </td>
                 </tr>
