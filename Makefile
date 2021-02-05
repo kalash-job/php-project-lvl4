@@ -8,7 +8,6 @@ setup:
 	touch database/database.sqlite
 	php artisan migrate
 	npm install
-	php artisan db:seed --class="StatusesTableSeeder"
 
 test:
 	php artisan test
