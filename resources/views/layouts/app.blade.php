@@ -87,6 +87,7 @@
         </nav>
 
         <main class="container py-4">
+            @include('flash::message')
             @yield('content')
         </main>
     </div>
