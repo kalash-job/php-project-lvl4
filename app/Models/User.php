@@ -51,4 +51,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Task::class, 'worker_id');
     }
+
+    public function labels()
+    {
+        return $this->hasMany(Label::class);
+    }
+
+    public function statuses()
+    {
+        return $this->hasMany(Status::class);
+    }
 }
