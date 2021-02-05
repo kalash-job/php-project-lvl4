@@ -17,6 +17,8 @@ class CreateLabelsTable extends Migration
             $table->id();
             $table->char('name', 255);
             $table->text('description');
+            $table->bigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }
