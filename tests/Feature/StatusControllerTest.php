@@ -16,7 +16,7 @@ class StatusControllerTest extends TestCase
     {
         parent::setUp();
         $this->seed(StatusesTableSeeder::class);
-        $this->user = User::factory()->create();
+        $this->user = User::first();
     }
 
     public function testIndex()

@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Status;
+use App\Models\User;
 use Carbon\Carbon;
 
 class StatusesTableSeeder extends Seeder
@@ -15,6 +15,9 @@ class StatusesTableSeeder extends Seeder
      */
     public function run()
     {
+        $user = User::factory()->create();
+        $user->save();
+
         $statuses = [
             'новый',
             'в работе',
@@ -22,7 +25,7 @@ class StatusesTableSeeder extends Seeder
             'завершен',
         ];
         foreach ($statuses as $statusValue) {
-            $status = new Status(['name' => $statusValue]);
+            $status = $user->statuses()->make(['name' => $statusValue]);
             $status->save();
         }
     }
