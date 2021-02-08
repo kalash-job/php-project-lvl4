@@ -32,6 +32,7 @@
                                 href="{{route('task_statuses.destroy', $status)}}"
                                 data-confirm="{{ __('tm.sure?') }}"
                                 data-method="delete"
+                                rel="nofollow"
                             >
                                 {{ __('tm.Delete') }}
                             </a>
