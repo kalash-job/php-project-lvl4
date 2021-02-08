@@ -42,54 +42,48 @@ class StatusControllerTest extends TestCase
         $data = ["name" => "test"];
         $response = $this->post(route('task_statuses.store'), $data);
         $response->assertSessionHasNoErrors();
-        $response->assertStatus(419);
+        $response->assertStatus(403);
     }
 
     public function testUpdate()
     {
         $status = Status::first();
-        $data = ['name' => 'test'];
-        $response = $this->patch(route('task_statuses.update', $status), $data);
+        $statusNew = Status::first();
+        $statusNew->name = 'test';
+        $data = $statusNew->toArray();
+        $response = $this->patch(route('task_statuses.update', $status->id), $data);
         $response->assertSessionHasNoErrors();
-        $response->assertStatus(419);
-        $response->assertRedirect();
         $this->assertDatabaseMissing('statuses', $data);
     }
 
     public function testDestroy()
     {
         $status = Status::first();
-        $response = $this->delete(route('task_statuses.destroy', $status));
+        $data = ["name" => $status->name, 'id' => $status->id];
+        $response = $this->delete(route('task_statuses.destroy', $status->id));
         $response->assertSessionHasNoErrors();
-        $response->assertStatus(419);
-        $response->assertRedirect();
-        $this->assertDatabaseHas('statuses', $status->toArray());
+        $this->assertDatabaseHas('statuses', $data);
     }
 
     public function testCreateWithAuthentication()
     {
         $response = $this->actingAs($this->user)->get(route('task_statuses.create'));
-        dd($response);
         $response->assertOk();
     }
 
     public function testEditWithAuthentication()
     {
         $response = $this->actingAs($this->user)->get(route('task_statuses.edit', 1));
-        dd($response);
         $response->assertOk();
     }
 
     public function testStoreWithAuthentication()
     {
         $data = ["name" => "test"];
-        $newId = 5;
         $response = $this->actingAs($this->user)->post(route('task_statuses.store'), $data);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
         $this->assertDatabaseHas('statuses', $data);
-        $response = $this->get(route('task_statuses.show', $newId));
-        $response->assertSeeText($data['name']);
     }
 
     public function testUpdateWithAuthentication()
