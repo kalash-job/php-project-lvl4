@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\StatusRequest;
 
 class StatusController extends Controller
 {
@@ -38,7 +39,7 @@ class StatusController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StatusRequest $request)
     {
         $this->authorize('create', Status::class);
         $user = auth()->user();
@@ -68,7 +69,7 @@ class StatusController extends Controller
      * @param  \App\Models\Status  $status
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Status $task_status)
+    public function update(StatusRequest $request, Status $task_status)
     {
         if ($request->user()->cannot('update', $task_status)) {
             abort(403);
