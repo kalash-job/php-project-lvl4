@@ -6,6 +6,7 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-param" content="_token">
 
     <title>Менеджер задач</title>
 
@@ -38,7 +39,7 @@
                                 {{ __('tm.Tasks') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link " href="https://php-l4-task-manager.herokuapp.com/task_statuses">
+                            <a class="nav-link " href="{{route('task_statuses.index')}}">
                                 {{ __('tm.Statuses') }}</a>
                         </li>
                         <li class="nav-item">
