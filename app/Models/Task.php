@@ -18,8 +18,8 @@ class Task extends Model
         'name',
         'description',
         'status_id',
-        'worker_id',
-        'author_id',
+        'assigned_to_id',
+        'created_by_id',
     ];
 
     public function labels()
@@ -32,7 +32,7 @@ class Task extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function author()
+    public function creator()
     {
         return $this->belongsTo(User::class);
     }
