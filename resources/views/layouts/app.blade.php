@@ -37,7 +37,7 @@
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link " href="https://php-l4-task-manager.herokuapp.com/tasks">
+                        <a class="nav-link " href="{{route('tasks.index')}}">
                             {{ __('tm.Tasks') }}</a>
                     </li>
                     <li class="nav-item">

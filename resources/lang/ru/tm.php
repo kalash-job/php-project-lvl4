@@ -12,15 +12,21 @@ return [
     |
     */
 
+    'Description'   => 'Описание',
     'Tasks'   => 'Задачи',
     'Labels' => 'Метки',
     'Statuses' => 'Статусы',
+    'Status' => 'Статус',
     'Create status' => 'Создать статус',
+    'Create task' => 'Создать задачу',
     'Updating status' => 'Изменение статуса',
-    'Update' => 'Обновить',
+    'Updating task' => 'Изменение задачи',
+    'BtnUpdate' => 'Обновить',
     'Create' => 'Создать',
     'ID' => 'ID',
     'Name' => 'Имя',
+    'Creator' => 'Автор',
+    'Worker' => 'Исполнитель',
     'Created' => 'Дата создания',
     'Actions' => 'Действия',
     'Delete' => 'Удалить',

@@ -92,7 +92,7 @@ class TaskControllerTest extends TestCase
         $task = Task::first();
         $taskNew = Task::first();
         $taskNew->name = 'testing';
-        $data = $taskNew->toArray();
+        $data = $taskNew->only("name", "description", "status_id", "assigned_to_id", "created_by_id");
         $response = $this->actingAs($this->user)->patch(route('tasks.update', $task), $data);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
@@ -102,7 +102,7 @@ class TaskControllerTest extends TestCase
     public function testDestroyWithAuthentication()
     {
         $task = Task::find(3);
-        $data = ["name" => $task->name, 'id' => $task->id];
+        $data = ['id' => $task->id];
         $response = $this->actingAs($this->user)->delete(route('tasks.destroy', $task->id));
         $response->assertSessionHasNoErrors();
         $this->assertDatabaseHas('tasks', $data);
@@ -111,9 +111,10 @@ class TaskControllerTest extends TestCase
     public function testDestroyByCreator()
     {
         $task = Task::first();
+        $data = ['id' => $task->id];
         $response = $this->actingAs($this->user)->delete(route('tasks.destroy', $task));
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
-        $this->assertDatabaseMissing('tasks', $task->toArray());
+        $this->assertDatabaseMissing('tasks', $data);
     }
 }
