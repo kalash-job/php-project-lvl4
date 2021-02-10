@@ -61,4 +61,13 @@ class User extends Authenticatable
     {
         return $this->hasMany(Status::class);
     }
+
+    public static function getWorkersForForm($creator): array
+    {
+        return self::all()->except($creator->id)
+            ->mapWithKeys(function ($item) {
+                return [$item['id'] => $item['name']];
+            })
+            ->toArray();
+    }
 }

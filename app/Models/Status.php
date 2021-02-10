@@ -25,4 +25,13 @@ class Status extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public static function getStatusesForForm(): array
+    {
+        return self::all()
+            ->mapWithKeys(function ($item) {
+                return [$item['id'] => $item['name']];
+            })
+            ->toArray();
+    }
 }
