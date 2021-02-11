@@ -42,7 +42,7 @@ class StatusControllerTest extends TestCase
         $data = ["name" => "test"];
         $response = $this->post(route('task_statuses.store'), $data);
         $response->assertSessionHasNoErrors();
-        $response->assertStatus(403);
+        $response->assertForbidden();
     }
 
     public function testUpdate()
@@ -53,6 +53,7 @@ class StatusControllerTest extends TestCase
         $data = $statusNew->toArray();
         $response = $this->patch(route('task_statuses.update', $status->id), $data);
         $response->assertSessionHasNoErrors();
+        $response->assertStatus(419);
         $this->assertDatabaseMissing('statuses', $data);
     }
 
@@ -62,6 +63,7 @@ class StatusControllerTest extends TestCase
         $data = ["name" => $status->name, 'id' => $status->id];
         $response = $this->delete(route('task_statuses.destroy', $status->id));
         $response->assertSessionHasNoErrors();
+        $response->assertStatus(419);
         $this->assertDatabaseHas('statuses', $data);
     }
 
