@@ -17,12 +17,19 @@ class TaskControllerTest extends TestCase
         parent::setUp();
         $this->seed(StatusesTableSeeder::class);
         $this->seed(TasksTableSeeder::class);
-        $this->user = User::first();
+        $this->user = User::find(2);
     }
 
     public function testIndex()
     {
         $response = $this->get(route('tasks.index'));
+        $response->assertOk();
+    }
+
+    public function testShow()
+    {
+        $task = Task::first();
+        $response = $this->get(route('tasks.show', $task));
         $response->assertOk();
     }
 
@@ -54,6 +61,7 @@ class TaskControllerTest extends TestCase
         $data = $taskNew->toArray();
         $response = $this->patch(route('tasks.update', $task->id), $data);
         $response->assertSessionHasNoErrors();
+        $response->assertForbidden();
         $this->assertDatabaseMissing('tasks', $data);
     }
 
@@ -63,6 +71,7 @@ class TaskControllerTest extends TestCase
         $data = ["name" => $task->name, 'id' => $task->id];
         $response = $this->delete(route('tasks.destroy', $task->id));
         $response->assertSessionHasNoErrors();
+        $response->assertForbidden();
         $this->assertDatabaseHas('tasks', $data);
     }
 
@@ -80,7 +89,7 @@ class TaskControllerTest extends TestCase
 
     public function testStoreWithAuthentication()
     {
-        $data = ["name" => "testing", 'created_by_id' => 1, 'assigned_to_id' => 2];
+        $data = ["name" => "testing", 'created_by_id' => 2, 'assigned_to_id' => 1];
         $response = $this->actingAs($this->user)->post(route('tasks.store'), $data);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
@@ -105,6 +114,7 @@ class TaskControllerTest extends TestCase
         $data = ['id' => $task->id];
         $response = $this->actingAs($this->user)->delete(route('tasks.destroy', $task->id));
         $response->assertSessionHasNoErrors();
+        $response->assertForbidden();
         $this->assertDatabaseHas('tasks', $data);
     }
 
