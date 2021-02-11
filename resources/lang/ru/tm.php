@@ -21,6 +21,7 @@ return [
     'Create task' => 'Создать задачу',
     'Updating status' => 'Изменение статуса',
     'Updating task' => 'Изменение задачи',
+    'Show task' => 'Просмотр задачи',
     'BtnUpdate' => 'Обновить',
     'Create' => 'Создать',
     'ID' => 'ID',

@@ -19,8 +19,8 @@ class TaskController extends Controller
     public function index()
     {
         $tasks = Task::with(['status', 'creator', 'worker'])->get();
-        $isAuth = Auth::check();
-        return view('task.index', compact('tasks', 'isAuth'));
+        $user = auth()->user();
+        return view('task.index', compact('tasks', 'user'));
     }
 
     /**
@@ -30,6 +30,7 @@ class TaskController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Task::class);
         $task = new Task();
         $statuses = Status::getStatusesForForm();
         $workers = User::getWorkersForForm();
@@ -45,6 +46,7 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Task::class);
         $user = auth()->user();
         $task = $user->tasksCreatedByMe()->make($request->all());
         $task->save();
@@ -60,7 +62,7 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        //
+        return view('task.show', compact('task'));
     }
 
     /**
@@ -71,6 +73,7 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
+        $this->authorize('create', Task::class);
         $statuses = Status::getStatusesForForm();
         $workers = User::getWorkersForForm();
         $labels = [];
@@ -86,10 +89,7 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        $user = auth()->user();
-        if (!$user) {
-            abort(419);
-        }
+        $this->authorize('update', $task);
         $task->fill($request->all());
         $task->save();
         flash(__('messages.taskWasUpdated'), 'success');
@@ -104,10 +104,7 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        $user = auth()->user();
-        if (!$user) {
-            abort(419);
-        }
+        $this->authorize('delete', $task);
         $task->delete();
         flash(__('messages.taskWasDeleted'), 'success');
         return redirect()->route('tasks.index');

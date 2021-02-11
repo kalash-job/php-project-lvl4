@@ -2,11 +2,11 @@
 
 @section('content')
     <h1 class="mb-5">{{ __('tm.Tasks') }}</h1>
-    @if($isAuth)
+    @auth
         <a href="{{route('tasks.create')}}" class="btn btn-primary ml-auto">
             {{ __('tm.Create task') }}
         </a>
-    @endif
+    @endauth
     <table class="table mt-2">
         <thead>
         <tr>
@@ -16,9 +16,9 @@
             <th>{{ __('tm.Creator') }}</th>
             <th>{{ __('tm.Worker') }}</th>
             <th>{{ __('tm.Created') }}</th>
-            @if($isAuth)
-            <th>{{ __('tm.Actions') }}</th>
-            @endif
+            @auth
+                <th>{{ __('tm.Actions') }}</th>
+            @endauth
         </tr>
         </thead>
 
@@ -27,12 +27,13 @@
                 <tr>
                     <td>{{$task->id}}</td>
                     <td>{{$task->status->name}}</td>
-                    <td>{{$task->name}}</td>
+                    <td><a href="{{route('tasks.show', $task)}}">{{$task->name}}</a></td>
                     <td>{{$task->creator->name}}</td>
                     <td>{{$task->worker->name}}</td>
                     <td>{{$task->created_at->format('d.m.Y')}}</td>
-                    @if($isAuth)
+                    @auth
                         <td>
+                            @can('delete', $task)
                             <a
                                 class="text-danger"
                                 href="{{route('tasks.destroy', $task)}}"
@@ -42,11 +43,12 @@
                             >
                                 {{ __('tm.Delete') }}
                             </a>
-                            <a href="{{route('tasks.edit', $task)}}">
-                                {{ __('tm.Update') }}
-                            </a>
+                            @endcan
+                                <a href="{{route('tasks.edit', $task)}}">
+                                    {{ __('tm.Update') }}
+                                </a>
                         </td>
-                    @endif
+                    @endauth
                 </tr>
             @endforeach
         @endif
