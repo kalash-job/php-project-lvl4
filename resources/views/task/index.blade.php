@@ -29,7 +29,7 @@
                     <td>{{$task->status->name}}</td>
                     <td><a href="{{route('tasks.show', $task)}}">{{$task->name}}</a></td>
                     <td>{{$task->creator->name}}</td>
-                    <td>{{$task->worker->name}}</td>
+                    <td>{{$task->worker->name ?? ''}}</td>
                     <td>{{$task->created_at->format('d.m.Y')}}</td>
                     @auth
                         <td>

@@ -7,6 +7,7 @@ use App\Models\Status;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Requests\TaskRequest;
 use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
@@ -19,8 +20,7 @@ class TaskController extends Controller
     public function index()
     {
         $tasks = Task::with(['status', 'creator', 'worker'])->get();
-        $user = auth()->user();
-        return view('task.index', compact('tasks', 'user'));
+        return view('task.index', compact('tasks'));
     }
 
     /**
@@ -44,7 +44,7 @@ class TaskController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TaskRequest $request)
     {
         $this->authorize('create', Task::class);
         $user = auth()->user();
@@ -87,7 +87,7 @@ class TaskController extends Controller
      * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Task $task)
+    public function update(TaskRequest $request, Task $task)
     {
         $this->authorize('update', $task);
         $task->fill($request->all());
