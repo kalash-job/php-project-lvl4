@@ -2,20 +2,20 @@
 
 @section('content')
     <h1 class="mb-5">{{ __('tm.Statuses') }}</h1>
-    @if($isAuth)
+    @auth
         <a href="{{route('task_statuses.create')}}" class="btn btn-primary">
             {{ __('tm.Create status') }}
         </a>
-    @endif
+    @endauth
     <table class="table mt-2">
         <thead>
         <tr>
             <th>{{ __('tm.ID') }}</th>
             <th>{{ __('tm.Name') }}</th>
             <th>{{ __('tm.Created') }}</th>
-            @if($isAuth)
+            @auth
                 <th>{{ __('tm.Actions') }}</th>
-            @endif
+            @endauth
         </tr>
         </thead>
 
@@ -25,7 +25,7 @@
                     <td>{{$status->id}}</td>
                     <td>{{$status->name}}</td>
                     <td>{{$status->created_at->format('d.m.Y')}}</td>
-                    @if($isAuth)
+                    @auth
                         <td>
                             <a
                                 class="text-danger"
@@ -40,7 +40,7 @@
                                 {{ __('tm.Update') }}
                             </a>
                         </td>
-                    @endif
+                    @endauth
                 </tr>
             @endforeach
         @endif

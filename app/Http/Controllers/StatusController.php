@@ -17,8 +17,7 @@ class StatusController extends Controller
     public function index()
     {
         $statuses = Status::All();
-        $isAuth = Auth::check();
-        return view('status.index', compact('statuses', 'isAuth'));
+        return view('status.index', compact('statuses'));
     }
 
     /**
