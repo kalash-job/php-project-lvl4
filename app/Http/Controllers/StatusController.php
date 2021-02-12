@@ -99,6 +99,8 @@ class StatusController extends Controller
         }
         if ($user->cannot('delete', $task_status)) {
             flash(__('messages.statusWasNotDeleted'), 'danger');
+        } elseif ($task_status->tasks->isNotEmpty()) {
+            flash(__('messages.statusWasNotDeleted'), 'danger');
         } else {
             $task_status->delete();
             flash(__('messages.statusWasDeleted'), 'success');
