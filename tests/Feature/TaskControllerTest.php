@@ -47,7 +47,7 @@ class TaskControllerTest extends TestCase
 
     public function testStore()
     {
-        $data = ["name" => "testing", 'created_by_id' => 1, 'assigned_to_id' => 2];
+        $data = ["name" => "testing", 'created_by_id' => 1, 'assigned_to_id' => 2, 'status_id' => 1];
         $response = $this->post(route('tasks.store'), $data);
         $response->assertSessionHasNoErrors();
         $response->assertForbidden();
@@ -89,7 +89,7 @@ class TaskControllerTest extends TestCase
 
     public function testStoreWithAuthentication()
     {
-        $data = ["name" => "testing", 'created_by_id' => 2, 'assigned_to_id' => 1];
+        $data = ["name" => "testing", 'created_by_id' => 2, 'assigned_to_id' => 1, 'status_id' => 1];
         $response = $this->actingAs($this->user)->post(route('tasks.store'), $data);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();

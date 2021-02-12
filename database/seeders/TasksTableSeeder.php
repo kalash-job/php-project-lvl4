@@ -26,7 +26,7 @@ class TasksTableSeeder extends Seeder
             $id++;
             $creator = User::find($id);
             $id++;
-            $task = $worker->tasksAssignedToMe()->make(['name' => $taskValue]);
+            $task = $worker->tasksAssignedToMe()->make(['name' => $taskValue, 'status_id' => 1]);
             $task->creator()->associate($creator);
             $task->save();
         }
