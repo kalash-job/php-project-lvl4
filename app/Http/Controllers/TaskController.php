@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Label;
-use App\Models\Status;
-use App\Models\Task;
-use App\Models\User;
+use App\Models\{Label, Status, Task, User};
 use Illuminate\Http\Request;
 use App\Http\Requests\TaskRequest;
 use Illuminate\Support\Facades\Auth;
@@ -34,7 +31,7 @@ class TaskController extends Controller
         $task = new Task();
         $statuses = Status::getStatusesForForm();
         $workers = User::getWorkersForForm();
-        $labels = [];
+        $labels = Label::getLabelsForForm();
         return view('task.create', compact('task', 'statuses', 'workers', 'labels'));
     }
 
@@ -50,6 +47,7 @@ class TaskController extends Controller
         $user = auth()->user();
         $task = $user->tasksCreatedByMe()->make($request->all());
         $task->save();
+        $task->labels()->sync($request->labels);
         flash(__('messages.taskWasCreated'), 'success');
         return redirect()->route('tasks.index');
     }
@@ -76,7 +74,7 @@ class TaskController extends Controller
         $this->authorize('create', Task::class);
         $statuses = Status::getStatusesForForm();
         $workers = User::getWorkersForForm();
-        $labels = [];
+        $labels = Label::getLabelsForForm();
         return view('task.edit', compact('task', 'statuses', 'workers', 'labels'));
     }
 
@@ -92,6 +90,8 @@ class TaskController extends Controller
         $this->authorize('update', $task);
         $task->fill($request->all());
         $task->save();
+        $labels = isset($request->labels[0]) ? $request->labels : [];
+        $task->labels()->sync($labels);
         flash(__('messages.taskWasUpdated'), 'success');
         return redirect()->route('tasks.index');
     }

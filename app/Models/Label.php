@@ -28,4 +28,13 @@ class Label extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public static function getLabelsForForm(): array
+    {
+        return self::all()
+            ->mapWithKeys(function ($item) {
+                return [$item['id'] => $item['name']];
+            })
+            ->toArray();
+    }
 }

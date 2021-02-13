@@ -7,4 +7,12 @@
     <p>{{ __('tm.Name') }}: {{ $task->id }}</p>
     <p>{{ __('tm.Status') }}: {{ $task->status->name }}</p>
     <p>{{ __('tm.Description') }}: {{ $task->description }}</p>
+    @if($task->labels->isNotEmpty())
+        <p>{{ __('tm.Labels') }}:</p>
+        <ul>
+            @foreach($task->labels as $label)
+                <li>{{$label->name}}</li>
+            @endforeach
+        </ul>
+    @endif
 @endsection
