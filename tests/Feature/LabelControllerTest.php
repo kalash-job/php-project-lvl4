@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
+use App\Models\{User, Label};
 use Database\Seeders\LabelsTableSeeder;
 use Database\Seeders\StatusesTableSeeder;
 use Database\Seeders\TasksTableSeeder;

@@ -45,7 +45,7 @@
                             {{ __('tm.Statuses') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " href="https://php-l4-task-manager.herokuapp.com/labels">
+                        <a class="nav-link " href="{{route('labels.index')}}">
                             {{ __('tm.Labels') }}</a>
                     </li>
                 </ul>

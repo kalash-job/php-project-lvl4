@@ -25,3 +25,5 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::resource('task_statuses', StatusController::class)->except(['show']);
 
 Route::resource('tasks', TaskController::class);
+
+Route::resource('labels', LabelController::class);
