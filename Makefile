@@ -23,3 +23,9 @@ lint-fix:
 
 test-coverage:
 	composer phpunit tests -- --coverage-clover build/logs/clover.xml
+
+seed:
+	php artisan migrate:refresh
+	php artisan db:seed --class="StatusesTableSeeder"
+	php artisan db:seed --class="TasksTableSeeder"
+	php artisan db:seed --class="LabelsTableSeeder"
