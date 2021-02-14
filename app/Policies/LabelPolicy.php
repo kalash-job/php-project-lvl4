@@ -2,12 +2,12 @@
 
 namespace App\Policies;
 
-use App\Models\Status;
+use App\Models\Label;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Auth;
 
-class StatusPolicy
+class LabelPolicy
 {
     use HandlesAuthorization;
 
@@ -26,10 +26,10 @@ class StatusPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Status  $status
+     * @param  \App\Models\Label  $label
      * @return mixed
      */
-    public function view(User $user, Status $status)
+    public function view(User $user, Label $label)
     {
         //
     }
@@ -49,10 +49,10 @@ class StatusPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Status  $status
+     * @param  \App\Models\Label  $label
      * @return mixed
      */
-    public function update(User $user, Status $status)
+    public function update(User $user, Label $label)
     {
         return Auth::check();
     }
@@ -61,10 +61,10 @@ class StatusPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Status  $status
+     * @param  \App\Models\Label  $label
      * @return mixed
      */
-    public function delete(User $user, Status $status)
+    public function delete(User $user, Label $label)
     {
         return Auth::check();
     }
@@ -73,10 +73,10 @@ class StatusPolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Status  $status
+     * @param  \App\Models\Label  $label
      * @return mixed
      */
-    public function restore(User $user, Status $status)
+    public function restore(User $user, Label $label)
     {
         //
     }
@@ -85,10 +85,10 @@ class StatusPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Status  $status
+     * @param  \App\Models\Label  $label
      * @return mixed
      */
-    public function forceDelete(User $user, Status $status)
+    public function forceDelete(User $user, Label $label)
     {
         //
     }
