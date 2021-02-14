@@ -30,12 +30,6 @@ class LabelControllerTest extends TestCase
         $response->assertOk();
     }
 
-    public function testShow()
-    {
-        $response = $this->get(route('labels.show', $this->label));
-        $response->assertOk();
-    }
-
     public function testCreate()
     {
         $response = $this->get(route('labels.create'));
