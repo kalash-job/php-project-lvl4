@@ -71,7 +71,7 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
-        $this->authorize('create', Task::class);
+        $this->authorize('update', $task);
         $statuses = Status::getStatusesForForm();
         $workers = User::getWorkersForForm();
         $labels = Label::getLabelsForForm();
