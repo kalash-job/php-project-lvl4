@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Label;
-use Illuminate\Http\Request;
+use App\Http\Requests\LabelRequest;
 
 class LabelController extends Controller
 {
@@ -36,7 +36,7 @@ class LabelController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(LabelRequest $request)
     {
         $this->authorize('create', Label::class);
         $user = auth()->user();
@@ -65,7 +65,7 @@ class LabelController extends Controller
      * @param  \App\Models\Label  $label
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Label $label)
+    public function update(LabelRequest $request, Label $label)
     {
         $this->authorize('update', $label);
         $user = auth()->user();
