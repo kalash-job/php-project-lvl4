@@ -2,11 +2,30 @@
 
 @section('content')
     <h1 class="mb-5">{{ __('tm.Tasks') }}</h1>
-    @auth
-        <a href="{{route('tasks.create')}}" class="btn btn-primary ml-auto">
-            {{ __('tm.Create task') }}
-        </a>
-    @endauth
+
+    <div class="d-flex">
+        <div>
+            {{ Form::open(['method' => 'GET', 'url' => route('tasks.index'), 'class' => 'form-inline', 'accept-charset' => 'UTF-8']) }}
+
+            {{ Form::select('filter[status_id]', $statuses, $filter['status_id'] ?? null,
+            ['class' => ['form-control', 'mr-2'], 'placeholder' => __('tm.Status')]) }}
+
+            {{ Form::select('filter[created_by_id]', $creators, $filter['created_by_id'] ?? null,
+            ['class' => ['form-control', 'mr-2'], 'placeholder' => __('tm.Creator')]) }}
+
+            {{ Form::select('filter[assigned_to_id]', $workers, $filter['assigned_to_id'] ?? null,
+            ['class' => ['form-control', 'mr-2'], 'placeholder' => __('tm.Worker')]) }}
+
+            {{ Form::submit(__('tm.Apply'), ['class' => ['btn', 'btn-outline-primary', 'mr-2']]) }}
+            {{ Form::close() }}
+        </div>
+        @auth
+            <a href="{{route('tasks.create')}}" class="btn btn-primary ml-auto">
+                {{ __('tm.Create task') }}
+            </a>
+        @endauth
+    </div>
+
     <table class="table mt-2">
         <thead>
         <tr>
@@ -34,19 +53,19 @@
                     @auth
                         <td>
                             @can('delete', $task)
-                            <a
-                                class="text-danger"
-                                href="{{route('tasks.destroy', $task)}}"
-                                data-confirm="{{ __('tm.sure?') }}"
-                                data-method="delete"
-                                rel="nofollow"
-                            >
-                                {{ __('tm.Delete') }}
-                            </a>
-                            @endcan
-                                <a href="{{route('tasks.edit', $task)}}">
-                                    {{ __('tm.Update') }}
+                                <a
+                                    class="text-danger"
+                                    href="{{route('tasks.destroy', $task)}}"
+                                    data-confirm="{{ __('tm.sure?') }}"
+                                    data-method="delete"
+                                    rel="nofollow"
+                                >
+                                    {{ __('tm.Delete') }}
                                 </a>
+                            @endcan
+                            <a href="{{route('tasks.edit', $task)}}">
+                                {{ __('tm.Update') }}
+                            </a>
                         </td>
                     @endauth
                 </tr>

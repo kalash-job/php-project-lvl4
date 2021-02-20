@@ -70,4 +70,13 @@ class User extends Authenticatable
             })
             ->toArray();
     }
+
+    public static function getCreatorsForForm(): array
+    {
+        return self::all()
+            ->mapWithKeys(function ($item) {
+                return [$item['id'] => $item['name']];
+            })
+            ->toArray();
+    }
 }

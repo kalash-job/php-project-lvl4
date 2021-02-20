@@ -6,6 +6,8 @@ use App\Models\{Label, Status, Task, User};
 use Illuminate\Http\Request;
 use App\Http\Requests\TaskRequest;
 use Illuminate\Support\Facades\Auth;
+use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\QueryBuilder\AllowedFilter;
 
 class TaskController extends Controller
 {
@@ -16,8 +18,18 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::with(['status', 'creator', 'worker'])->get();
-        return view('task.index', compact('tasks'));
+        $tasks = QueryBuilder::for(Task::class)
+            ->allowedFilters([
+                AllowedFilter::exact('status_id'),
+                AllowedFilter::exact('created_by_id'),
+                AllowedFilter::exact('assigned_to_id'),
+            ])
+            ->get();
+        $filter = Request('filter');
+        $statuses = Status::getStatusesForForm();
+        $workers = User::getWorkersForForm();
+        $creators = User::getCreatorsForForm();
+        return view('task.index', compact('tasks', 'statuses', 'workers', 'creators', 'filter'));
     }
 
     /**
@@ -38,7 +50,7 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(TaskRequest $request)
@@ -55,7 +67,7 @@ class TaskController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Task  $task
+     * @param \App\Models\Task $task
      * @return \Illuminate\Http\Response
      */
     public function show(Task $task)
@@ -66,7 +78,7 @@ class TaskController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Task  $task
+     * @param \App\Models\Task $task
      * @return \Illuminate\Http\Response
      */
     public function edit(Task $task)
@@ -81,8 +93,8 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Task  $task
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Task $task
      * @return \Illuminate\Http\Response
      */
     public function update(TaskRequest $request, Task $task)
@@ -99,7 +111,7 @@ class TaskController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Task  $task
+     * @param \App\Models\Task $task
      * @return \Illuminate\Http\Response
      */
     public function destroy(Task $task)
