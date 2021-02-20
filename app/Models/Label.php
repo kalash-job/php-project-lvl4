@@ -31,10 +31,6 @@ class Label extends Model
 
     public static function getLabelsForForm(): array
     {
-        return self::all()
-            ->mapWithKeys(function ($item) {
-                return [$item['id'] => $item['name']];
-            })
-            ->toArray();
+        return self::pluck('name', 'id')->toArray();
     }
 }

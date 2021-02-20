@@ -64,19 +64,11 @@ class User extends Authenticatable
 
     public static function getWorkersForForm(): array
     {
-        return self::all()
-            ->mapWithKeys(function ($item) {
-                return [$item['id'] => $item['name']];
-            })
-            ->toArray();
+        return self::pluck('name', 'id')->toArray();
     }
 
     public static function getCreatorsForForm(): array
     {
-        return self::all()
-            ->mapWithKeys(function ($item) {
-                return [$item['id'] => $item['name']];
-            })
-            ->toArray();
+        return self::pluck('name', 'id')->toArray();
     }
 }
