@@ -92,14 +92,6 @@
 
     <main class="container py-4">
         @include('flash::message')
-        @if ($errors->any())
-            @foreach ($errors->all() as $error)
-                <div class="alert alert-danger">
-                    {{ $error }}
-                </div>
-            @endforeach
-
-        @endif
         @yield('content')
     </main>
 </div>

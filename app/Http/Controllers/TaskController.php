@@ -24,6 +24,7 @@ class TaskController extends Controller
                 AllowedFilter::exact('created_by_id'),
                 AllowedFilter::exact('assigned_to_id'),
             ])
+            ->with(['status', 'creator', 'worker'])
             ->get();
         $filter = Request('filter');
         $statuses = Status::getStatusesForForm();

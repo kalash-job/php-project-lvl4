@@ -1,6 +1,11 @@
 <div class="form-group">
     {{ Form::label('name', __('tm.Name')) }}
-    {{ Form::text('name', old('name'), ['class' => 'form-control', 'id' => 'name']) }}
+    {{ Form::text('name', old('name'), ['class' => ['form-control', $errors->first('name') ? 'is-invalid' : ''], 'id' => 'name']) }}
+    @error('name')
+    <span class="invalid-feedback" role="alert">
+        <strong>{{ $message }}</strong>
+    </span>
+    @enderror
 </div>
 <div class="form-group">
     {{ Form::label('description', __('tm.Description')) }}
@@ -11,7 +16,12 @@
 <div class="form-group">
     {{ Form::label('status_id', __('tm.Status')) }}
     {{ Form::select('status_id', $statuses, old('status_id'),
-        ['class' => 'form-control', 'id' => 'status_id', 'placeholder' => '----------']) }}
+        ['class' => ['form-control', $errors->first('status_id') ? 'is-invalid' : ''], 'id' => 'status_id', 'placeholder' => '----------']) }}
+    @error('status_id')
+    <span class="invalid-feedback" role="alert">
+        <strong>{{ $message }}</strong>
+    </span>
+    @enderror
 </div>
 <div class="form-group">
     {{ Form::label('assigned_to_id', __('tm.Worker')) }}
