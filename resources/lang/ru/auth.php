@@ -18,6 +18,7 @@ return [
     'throttle' => 'Слишком много попыток входа. Пожалуйста, попробуйте еще раз через :seconds секунд.',
     'Register' => 'Регистрация',
     'Login' => 'Вход',
+    'Logout' => 'Выход',
     'LoginBtn' => 'Войти',
     'RegisterBtn' => 'Зарегистрировать',
     'Name' => 'Имя',
@@ -26,4 +27,6 @@ return [
     'Confirm Password' => 'Подтверждение',
     'Forgot Your Password?' => 'Забыли пароль?',
     'Remember Me' => 'Запомнить меня',
+    'Reset Password' => 'Сброс пароля',
+    'Send Password Reset Link' => 'Сбросить пароль',
 ];
