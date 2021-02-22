@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Status;
@@ -29,12 +28,18 @@ class StatusControllerTest extends TestCase
     {
         $response = $this->get(route('task_statuses.create'));
         $response->assertForbidden();
+        // with authentication
+        $response = $this->actingAs($this->user)->get(route('task_statuses.create'));
+        $response->assertOk();
     }
 
     public function testEdit()
     {
         $response = $this->get(route('task_statuses.edit', 1));
         $response->assertForbidden();
+        // with authentication
+        $response = $this->actingAs($this->user)->get(route('task_statuses.edit', 1));
+        $response->assertOk();
     }
 
     public function testStore()
@@ -43,18 +48,27 @@ class StatusControllerTest extends TestCase
         $response = $this->post(route('task_statuses.store'), $data);
         $response->assertSessionHasNoErrors();
         $response->assertForbidden();
+        $this->assertDatabaseMissing('statuses', $data);
+        // with authentication
+        $response = $this->actingAs($this->user)->post(route('task_statuses.store'), $data);
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect();
+        $this->assertDatabaseHas('statuses', $data);
     }
 
     public function testUpdate()
     {
         $status = Status::first();
-        $statusNew = Status::first();
-        $statusNew->name = 'test';
-        $data = $statusNew->toArray();
+        $data = ['name' => 'test'];
         $response = $this->patch(route('task_statuses.update', $status->id), $data);
         $response->assertSessionHasNoErrors();
         $response->assertStatus(419);
         $this->assertDatabaseMissing('statuses', $data);
+        // with authentication
+        $response = $this->actingAs($this->user)->patch(route('task_statuses.update', $status), $data);
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect();
+        $this->assertDatabaseHas('statuses', $data);
     }
 
     public function testDestroy()
@@ -65,42 +79,7 @@ class StatusControllerTest extends TestCase
         $response->assertSessionHasNoErrors();
         $response->assertStatus(419);
         $this->assertDatabaseHas('statuses', $data);
-    }
-
-    public function testCreateWithAuthentication()
-    {
-        $response = $this->actingAs($this->user)->get(route('task_statuses.create'));
-        $response->assertOk();
-    }
-
-    public function testEditWithAuthentication()
-    {
-        $response = $this->actingAs($this->user)->get(route('task_statuses.edit', 1));
-        $response->assertOk();
-    }
-
-    public function testStoreWithAuthentication()
-    {
-        $data = ["name" => "test"];
-        $response = $this->actingAs($this->user)->post(route('task_statuses.store'), $data);
-        $response->assertSessionHasNoErrors();
-        $response->assertRedirect();
-        $this->assertDatabaseHas('statuses', $data);
-    }
-
-    public function testUpdateWithAuthentication()
-    {
-        $status = Status::first();
-        $data = ['name' => 'test'];
-        $response = $this->actingAs($this->user)->patch(route('task_statuses.update', $status), $data);
-        $response->assertSessionHasNoErrors();
-        $response->assertRedirect();
-        $this->assertDatabaseHas('statuses', $data);
-    }
-
-    public function testDestroyWithAuthentication()
-    {
-        $status = Status::first();
+        // with authentication
         $response = $this->actingAs($this->user)->delete(route('task_statuses.destroy', $status));
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
