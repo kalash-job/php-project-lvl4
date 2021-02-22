@@ -13,3 +13,5 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+resources/views/emails/email.blade.php
+app/Mail/TestMail.php
