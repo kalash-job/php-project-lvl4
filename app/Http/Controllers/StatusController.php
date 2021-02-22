@@ -56,7 +56,7 @@ class StatusController extends Controller
      */
     public function edit(Status $task_status)
     {
-        $this->authorize('create', Status::class);
+        $this->authorize('update', $task_status);
         $status = $task_status;
         return view('status.edit', compact('status'));
     }
