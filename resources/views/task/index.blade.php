@@ -13,7 +13,7 @@
             {{ Form::select('filter[created_by_id]', $creators, $filter['created_by_id'] ?? null,
             ['class' => ['form-control', 'mr-2'], 'placeholder' => __('tm.Creator')]) }}
 
-            {{ Form::select('filter[assigned_to_id]', $workers, $filter['assigned_to_id'] ?? null,
+            {{ Form::select('filter[assigned_to_id]', $workers, $filter['filter[assigned_to_id]'] ?? null,
             ['class' => ['form-control', 'mr-2'], 'placeholder' => __('tm.Worker')]) }}
 
             {{ Form::submit(__('tm.Apply'), ['class' => ['btn', 'btn-outline-primary', 'mr-2']]) }}
