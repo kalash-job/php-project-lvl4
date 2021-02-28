@@ -29,3 +29,6 @@ seed:
 	php artisan db:seed --class="StatusesTableSeeder"
 	php artisan db:seed --class="TasksTableSeeder"
 	php artisan db:seed --class="LabelsTableSeeder"
+
+analyse:
+	vendor/bin/phpstan analyse --level 6 app routes tests
