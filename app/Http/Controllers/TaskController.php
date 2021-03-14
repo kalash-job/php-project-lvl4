@@ -16,7 +16,7 @@ class TaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $tasks = QueryBuilder::for(Task::class)
             ->allowedFilters([
@@ -26,7 +26,7 @@ class TaskController extends Controller
             ])
             ->with(['status', 'creator', 'worker'])
             ->get();
-        $filter = Request('filter');
+        $filter = $request->filter;
         $statuses = Status::getStatusesForForm();
         $workers = User::getWorkersForForm();
         $creators = User::getCreatorsForForm();
