@@ -8,8 +8,8 @@ use Database\Seeders\{StatusesTableSeeder, TasksTableSeeder};
 
 class TaskControllerTest extends TestCase
 {
-    public $user;
-    public $task;
+    public User $user;
+    public Task $task;
 
     public function setUp(): void
     {
