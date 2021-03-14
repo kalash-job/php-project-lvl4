@@ -28,8 +28,12 @@ use Illuminate\Notifications\Notifiable;
  * @property-read int|null $tasks_assigned_to_me_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Task[] $tasksCreatedByMe
  * @property-read int|null $tasks_created_by_me_count
+ * @method static \Illuminate\Database\Eloquent\Builder|User create($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User find($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User first()
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|User pluck($valueFirst, $valueSecond)
  * @method static \Illuminate\Database\Eloquent\Builder|User query()
  * @method static \Illuminate\Database\Eloquent\Builder|User whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereEmail($value)

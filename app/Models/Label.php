@@ -17,8 +17,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Task[] $tasks
  * @property-read int|null $tasks_count
  * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|Label first()
  * @method static \Illuminate\Database\Eloquent\Builder|Label newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Label newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Label pluck($valueFirst, $valueSecond)
  * @method static \Illuminate\Database\Eloquent\Builder|Label query()
  * @method static \Illuminate\Database\Eloquent\Builder|Label whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Label whereDescription($value)
