@@ -9,7 +9,7 @@ use Database\Seeders\StatusesTableSeeder;
 
 class StatusControllerTest extends TestCase
 {
-    public $user;
+    public User $user;
 
     public function setUp(): void
     {
@@ -18,13 +18,13 @@ class StatusControllerTest extends TestCase
         $this->user = User::first();
     }
 
-    public function testIndex()
+    public function testIndex(): void
     {
         $response = $this->get(route('task_statuses.index'));
         $response->assertOk();
     }
 
-    public function testCreate()
+    public function testCreate(): void
     {
         $response = $this->get(route('task_statuses.create'));
         $response->assertForbidden();
@@ -33,7 +33,7 @@ class StatusControllerTest extends TestCase
         $response->assertOk();
     }
 
-    public function testEdit()
+    public function testEdit(): void
     {
         $response = $this->get(route('task_statuses.edit', 1));
         $response->assertForbidden();
@@ -42,7 +42,7 @@ class StatusControllerTest extends TestCase
         $response->assertOk();
     }
 
-    public function testStore()
+    public function testStore(): void
     {
         $data = ["name" => "test"];
         $response = $this->post(route('task_statuses.store'), $data);
@@ -56,7 +56,7 @@ class StatusControllerTest extends TestCase
         $this->assertDatabaseHas('statuses', $data);
     }
 
-    public function testUpdate()
+    public function testUpdate(): void
     {
         $status = Status::first();
         $data = ['name' => 'test'];
@@ -71,7 +71,7 @@ class StatusControllerTest extends TestCase
         $this->assertDatabaseHas('statuses', $data);
     }
 
-    public function testDestroy()
+    public function testDestroy(): void
     {
         $status = Status::first();
         $data = ["name" => $status->name, 'id' => $status->id];

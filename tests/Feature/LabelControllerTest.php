@@ -10,8 +10,8 @@ use Tests\TestCase;
 
 class LabelControllerTest extends TestCase
 {
-    public $user;
-    public $label;
+    public User $user;
+    public Label $label;
 
     public function setUp(): void
     {
@@ -23,13 +23,13 @@ class LabelControllerTest extends TestCase
         $this->label = Label::first();
     }
 
-    public function testIndex()
+    public function testIndex(): void
     {
         $response = $this->get(route('labels.index'));
         $response->assertOk();
     }
 
-    public function testCreate()
+    public function testCreate(): void
     {
         $response = $this->get(route('labels.create'));
         $response->assertForbidden();
@@ -37,7 +37,7 @@ class LabelControllerTest extends TestCase
         $response->assertOk();
     }
 
-    public function testEdit()
+    public function testEdit(): void
     {
         $response = $this->get(route('labels.edit', 1));
         $response->assertForbidden();
@@ -46,7 +46,7 @@ class LabelControllerTest extends TestCase
         $response->assertOk();
     }
 
-    public function testStore()
+    public function testStore(): void
     {
         $data = ["name" => "testing"];
         $response = $this->post(route('labels.store'), $data);
@@ -60,7 +60,7 @@ class LabelControllerTest extends TestCase
         $this->assertDatabaseHas('labels', $data);
     }
 
-    public function testUpdate()
+    public function testUpdate(): void
     {
         $this->label->name = 'testing';
         $data = $this->label->only("name", "description");
@@ -75,7 +75,7 @@ class LabelControllerTest extends TestCase
         $this->assertDatabaseHas('labels', $data);
     }
 
-    public function testDestroy()
+    public function testDestroy(): void
     {
         $data = ['id' => $this->label->id];
         $response = $this->delete(route('labels.destroy', $this->label));

@@ -20,19 +20,19 @@ class TaskControllerTest extends TestCase
         $this->task = Task::first();
     }
 
-    public function testIndex()
+    public function testIndex(): void
     {
         $response = $this->get(route('tasks.index'));
         $response->assertOk();
     }
 
-    public function testShow()
+    public function testShow(): void
     {
         $response = $this->get(route('tasks.show', $this->task));
         $response->assertOk();
     }
 
-    public function testCreate()
+    public function testCreate(): void
     {
         $response = $this->get(route('tasks.create'));
         $response->assertForbidden();
@@ -41,7 +41,7 @@ class TaskControllerTest extends TestCase
         $response->assertOk();
     }
 
-    public function testEdit()
+    public function testEdit(): void
     {
         $response = $this->get(route('tasks.edit', 1));
         $response->assertForbidden();
@@ -50,7 +50,7 @@ class TaskControllerTest extends TestCase
         $response->assertOk();
     }
 
-    public function testStore()
+    public function testStore(): void
     {
         $data = ["name" => "testing", 'created_by_id' => 2, 'assigned_to_id' => 1, 'status_id' => 1];
         $response = $this->post(route('tasks.store'), $data);
@@ -64,7 +64,7 @@ class TaskControllerTest extends TestCase
         $this->assertDatabaseHas('tasks', $data);
     }
 
-    public function testUpdate()
+    public function testUpdate(): void
     {
         $this->task->name = 'testing';
         $data = $this->task->only("name", "description", "status_id", "assigned_to_id", "created_by_id");
@@ -79,7 +79,7 @@ class TaskControllerTest extends TestCase
         $this->assertDatabaseHas('tasks', $data);
     }
 
-    public function testDestroy()
+    public function testDestroy(): void
     {
         $data = ['id' => $this->task->id];
         $response = $this->delete(route('tasks.destroy', $this->task->id));
