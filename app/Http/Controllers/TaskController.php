@@ -58,9 +58,11 @@ class TaskController extends Controller
     {
         $this->authorize('create', Task::class);
         $user = auth()->user();
-        $task = $user->tasksCreatedByMe()->make($request->all());
+        $task = $user->tasksCreatedByMe()->make($request->except('labels'));
         $task->save();
-        $task->labels()->sync($request->labels);
+        if (isset($request->labels[0])) {
+            $task->labels()->sync($request->labels);
+        }
         flash(__('messages.taskWasCreated'), 'success');
         return redirect()->route('tasks.index');
     }
@@ -103,8 +105,9 @@ class TaskController extends Controller
         $this->authorize('update', $task);
         $task->fill($request->all());
         $task->save();
-        $labels = isset($request->labels[0]) ? $request->labels : [];
-        $task->labels()->sync($labels);
+        if (isset($request->labels[0])) {
+            $task->labels()->sync($request->labels);
+        }
         flash(__('messages.taskWasUpdated'), 'success');
         return redirect()->route('tasks.index');
     }
