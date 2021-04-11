@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Label;
+use App\Models\{Label, User};
 use App\Http\Requests\LabelRequest;
 
 class LabelController extends Controller
@@ -14,8 +14,8 @@ class LabelController extends Controller
      */
     public function index()
     {
-        $labels = Label::All();
-        return view('label.index', compact('labels'));
+        $labels = Label::all();
+        return response()->view('label.index', compact('labels'));
     }
 
     /**
@@ -27,21 +27,20 @@ class LabelController extends Controller
     {
         $this->authorize('create', Label::class);
         $label = new Label();
-        return view('label.create', compact('label'));
+        return response()->view('label.create', compact('label'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  LabelRequest  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(LabelRequest $request)
     {
         $this->authorize('create', Label::class);
         $user = auth()->user();
-        $label = $user->labels()->make($request->all());
-        $label->save();
+        $user->labels()->create($request->all());
         flash(__('messages.labelWasCreated'), 'success');
         return redirect()->route('labels.index');
     }
@@ -55,15 +54,15 @@ class LabelController extends Controller
     public function edit(Label $label)
     {
         $this->authorize('update', $label);
-        return view('label.edit', compact('label'));
+        return response()->view('label.edit', compact('label'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  LabelRequest  $request
      * @param  \App\Models\Label  $label
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(LabelRequest $request, Label $label)
     {
@@ -80,7 +79,7 @@ class LabelController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Label  $label
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Label $label)
     {
