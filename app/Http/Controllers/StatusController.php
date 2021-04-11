@@ -16,8 +16,8 @@ class StatusController extends Controller
      */
     public function index()
     {
-        $statuses = Status::All();
-        return view('status.index', compact('statuses'));
+        $statuses = Status::all();
+        return response()->view('status.index', compact('statuses'));
     }
 
     /**
@@ -29,14 +29,14 @@ class StatusController extends Controller
     {
         $this->authorize('create', Status::class);
         $status = new Status();
-        return view('status.create', compact('status'));
+        return response()->view('status.create', compact('status'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  StatusRequest  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StatusRequest $request)
     {
@@ -51,33 +51,30 @@ class StatusController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Status  $status
+     * @param  \App\Models\Status  $task_status
      * @return \Illuminate\Http\Response
      */
     public function edit(Status $task_status)
     {
         $this->authorize('update', $task_status);
         $status = $task_status;
-        return view('status.edit', compact('status'));
+        return response()->view('status.edit', compact('status'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Status  $status
-     * @return \Illuminate\Http\Response
+     * @param  StatusRequest  $request
+     * @param  \App\Models\Status  $task_status
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(StatusRequest $request, Status $task_status)
     {
-        $user = auth()->user();
-        if (!$user) {
-            abort(419);
-        }
+        $this->authorize('update', $task_status);
         if ($request->user()->cannot('update', $task_status)) {
             abort(403);
         }
-        $task_status->user()->associate($user);
+        $task_status->user()->associate(auth()->user());
         $task_status->fill($request->all());
         $task_status->save();
         flash(__('messages.statusWasUpdated'), 'success');
@@ -87,15 +84,13 @@ class StatusController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Status  $status
-     * @return \Illuminate\Http\Response
+     * @param  \App\Models\Status  $task_status
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Status $task_status)
     {
+        $this->authorize('delete', $task_status);
         $user = auth()->user();
-        if (!$user) {
-            abort(419);
-        }
         if ($user->cannot('delete', $task_status)) {
             flash(__('messages.statusWasNotDeleted'), 'danger');
         } elseif ($task_status->tasks->isNotEmpty()) {
