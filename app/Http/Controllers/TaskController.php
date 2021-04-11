@@ -30,7 +30,7 @@ class TaskController extends Controller
         $statuses = Status::getStatusesForForm();
         $workers = User::getWorkersForForm();
         $creators = User::getCreatorsForForm();
-        return view('task.index', compact('tasks', 'statuses', 'workers', 'creators', 'filter'));
+        return response()->view('task.index', compact('tasks', 'statuses', 'workers', 'creators', 'filter'));
     }
 
     /**
@@ -45,14 +45,14 @@ class TaskController extends Controller
         $statuses = Status::getStatusesForForm();
         $workers = User::getWorkersForForm();
         $labels = Label::getLabelsForForm();
-        return view('task.create', compact('task', 'statuses', 'workers', 'labels'));
+        return response()->view('task.create', compact('task', 'statuses', 'workers', 'labels'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param TaskRequest $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(TaskRequest $request)
     {
@@ -73,7 +73,7 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        return view('task.show', compact('task'));
+        return response()->view('task.show', compact('task'));
     }
 
     /**
@@ -88,15 +88,15 @@ class TaskController extends Controller
         $statuses = Status::getStatusesForForm();
         $workers = User::getWorkersForForm();
         $labels = Label::getLabelsForForm();
-        return view('task.edit', compact('task', 'statuses', 'workers', 'labels'));
+        return response()->view('task.edit', compact('task', 'statuses', 'workers', 'labels'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param TaskRequest $request
      * @param \App\Models\Task $task
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(TaskRequest $request, Task $task)
     {
@@ -113,7 +113,7 @@ class TaskController extends Controller
      * Remove the specified resource from storage.
      *
      * @param \App\Models\Task $task
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Task $task)
     {
