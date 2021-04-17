@@ -32,8 +32,6 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Label extends Model
 {
-    use HasFactory;
-
     /**
      * The attributes that are mass assignable.
      *
@@ -46,12 +44,17 @@ class Label extends Model
 
     /**
      * The tasks that belong to the label.
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function tasks()
     {
         return $this->belongsToMany(Task::class)->withTimestamps();
     }
 
+    /**
+     * A label is belong to a user.
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
