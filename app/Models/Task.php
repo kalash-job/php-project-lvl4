@@ -53,21 +53,37 @@ class Task extends Model
         'created_by_id',
     ];
 
+    /**
+     * A task is owned by labels.
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function labels()
     {
         return $this->belongsToMany(Label::class)->withTimestamps();
     }
 
+    /**
+     * A task is assigned to a user.
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function worker()
     {
         return $this->belongsTo(User::class, 'assigned_to_id');
     }
 
+    /**
+     * A task is created by a user.
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function creator()
     {
         return $this->belongsTo(User::class, 'created_by_id');
     }
 
+    /**
+     * A task is owned by a status.
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function status()
     {
         return $this->belongsTo(Status::class);

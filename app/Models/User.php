@@ -81,21 +81,37 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * Tasks are created by a user.
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function tasksCreatedByMe()
     {
         return $this->hasMany(Task::class, 'created_by_id');
     }
 
+    /**
+     * Tasks are assigned to a user.
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function tasksAssignedToMe()
     {
         return $this->hasMany(Task::class, 'assigned_to_id');
     }
 
+    /**
+     * Labels are created by a user.
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function labels()
     {
         return $this->hasMany(Label::class);
     }
 
+    /**
+     * Statuses are created by a user.
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function statuses()
     {
         return $this->hasMany(Status::class);
