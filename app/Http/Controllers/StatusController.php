@@ -71,7 +71,7 @@ class StatusController extends Controller
     public function update(StatusRequest $request, Status $task_status)
     {
         $user = auth()->user();
-        if (!$user) {
+        if (empty($user)) {
             abort(419);
         }
         if ($request->user()->cannot('update', $task_status)) {
@@ -93,7 +93,7 @@ class StatusController extends Controller
     public function destroy(Status $task_status)
     {
         $user = auth()->user();
-        if (!$user) {
+        if (empty($user)) {
             abort(419);
         }
         if ($user->cannot('delete', $task_status)) {

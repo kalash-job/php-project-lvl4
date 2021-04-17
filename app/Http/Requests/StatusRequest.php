@@ -27,7 +27,8 @@ class StatusRequest extends FormRequest
         $rules = [
             'name' => 'required|unique:statuses',
         ];
-        if ($this->route()->getName() === 'task_statuses.update') {
+        $route = $this->route() ? $this->route()->getName() : '';
+        if ($route === 'task_statuses.update') {
             $rules['name'] = [
                 'required',
                 Rule::unique('statuses', 'name')->ignore($this->task_status->id),

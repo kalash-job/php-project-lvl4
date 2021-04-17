@@ -27,7 +27,8 @@ class LabelRequest extends FormRequest
         $rules = [
             'name' => 'required|unique:statuses',
         ];
-        if ($this->route()->getName() === 'labels.update') {
+        $route = $this->route() ? $this->route()->getName() : '';
+        if ($route === 'labels.update') {
             $rules['name'] = [
                 'required',
                 Rule::unique('labels', 'name')->ignore($this->label->id),

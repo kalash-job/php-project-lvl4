@@ -28,7 +28,8 @@ class TaskRequest extends FormRequest
             'name' => 'required|unique:tasks',
             'status_id' => 'required',
         ];
-        if ($this->route()->getName() === 'tasks.update') {
+        $route = $this->route() ? $this->route()->getName() : '';
+        if ($route === 'tasks.update') {
             $rules['name'] = [
                 'required',
                 Rule::unique('tasks', 'name')->ignore($this->task->id),
