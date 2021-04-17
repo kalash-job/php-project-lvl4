@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rule;
 
 class LabelRequest extends FormRequest
@@ -27,8 +28,7 @@ class LabelRequest extends FormRequest
         $rules = [
             'name' => 'required|unique:statuses',
         ];
-        $route = $this->route() ? $this->route()->getName() : '';
-        if ($route === 'labels.update') {
+        if (Route::currentRouteName() === 'labels.update') {
             $rules['name'] = [
                 'required',
                 Rule::unique('labels', 'name')->ignore($this->label->id),

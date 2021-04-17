@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Route;
 
 class TaskRequest extends FormRequest
 {
@@ -28,8 +29,7 @@ class TaskRequest extends FormRequest
             'name' => 'required|unique:tasks',
             'status_id' => 'required',
         ];
-        $route = $this->route() ? $this->route()->getName() : '';
-        if ($route === 'tasks.update') {
+        if (Route::currentRouteName() === 'tasks.update') {
             $rules['name'] = [
                 'required',
                 Rule::unique('tasks', 'name')->ignore($this->task->id),

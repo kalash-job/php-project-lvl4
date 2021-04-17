@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rule;
 
 class StatusRequest extends FormRequest
@@ -27,8 +28,7 @@ class StatusRequest extends FormRequest
         $rules = [
             'name' => 'required|unique:statuses',
         ];
-        $route = $this->route() ? $this->route()->getName() : '';
-        if ($route === 'task_statuses.update') {
+        if (Route::currentRouteName() === 'task_statuses.update') {
             $rules['name'] = [
                 'required',
                 Rule::unique('statuses', 'name')->ignore($this->task_status->id),
