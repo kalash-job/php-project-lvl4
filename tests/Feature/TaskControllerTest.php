@@ -122,7 +122,11 @@ class TaskControllerTest extends TestCase
         $response->assertForbidden();
         $this->assertDatabaseHas('tasks', $data);
         // with authorization (user is not creator)
-        $task = Task::find(3);
+        $task = Task::findOrFail(3);
+        self::assertTrue(isset($task));
+        if (is_null($task)) {
+            return;
+        }
         $response = $this->actingAs($this->user)->delete(route('tasks.destroy', $task->id));
         $response->assertSessionHasNoErrors();
         $response->assertForbidden();

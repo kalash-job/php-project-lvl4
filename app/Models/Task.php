@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Models\Status $status
  * @property-read \App\Models\User|null $worker
  * @method static \Illuminate\Database\Eloquent\Builder|Task find($value)
+ * @method static Task|null findOrFail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Task first()
  * @method static Task|null firstOrFail()
  * @method static \Illuminate\Database\Eloquent\Builder|Task newModelQuery()
