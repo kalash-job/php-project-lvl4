@@ -12,14 +12,14 @@ class LabelControllerTest extends TestCase
 {
     /**
      *
-     * @var User
+     * @var \Illuminate\Database\Eloquent\Builder|User
      */
-    public User $user;
+    public $user;
     /**
      *
-     * @var Label
+     * @var \Illuminate\Database\Eloquent\Builder|Label
      */
-    public Label $label;
+    public $label;
 
     public function setUp(): void
     {
