@@ -10,7 +10,16 @@ use Tests\TestCase;
 
 class LabelControllerTest extends TestCase
 {
+    /**
+     *
+     * @property User|null
+     */
     public User $user;
+
+    /**
+     *
+     * @property Label|null
+     */
     public Label $label;
 
     public function setUp(): void
