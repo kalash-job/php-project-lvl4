@@ -76,8 +76,7 @@ class StatusControllerTest extends TestCase
     {
         $status = Status::firstOrFail();
         self::assertTrue(isset($this->user));
-        self::assertTrue(isset($status));
-        if (is_null($this->user) || is_null($status)) {
+        if (is_null($this->user)) {
             return;
         }
         $data = ['name' => 'test'];
@@ -96,8 +95,7 @@ class StatusControllerTest extends TestCase
     {
         $status = Status::firstOrFail();
         self::assertTrue(isset($this->user));
-        self::assertTrue(isset($status));
-        if (is_null($this->user) || is_null($status)) {
+        if (is_null($this->user)) {
             return;
         }
         $data = ["name" => $status->name, 'id' => $status->id];
