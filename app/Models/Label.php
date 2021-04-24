@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read int|null $tasks_count
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|Label first()
+ * @method static Label|null firstOrFail()
  * @method static \Illuminate\Database\Eloquent\Builder|Label newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Label newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Label pluck($valueFirst, $valueSecond)

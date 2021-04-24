@@ -32,6 +32,7 @@ use Illuminate\Notifications\Notifiable;
  * @method static \Illuminate\Database\Eloquent\Builder|User create($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User find($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User first()
+ * @method static User|null firstOrFail()
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User pluck($valueFirst, $valueSecond)

@@ -12,12 +12,12 @@ class LabelControllerTest extends TestCase
 {
     /**
      *
-     * @var \Illuminate\Database\Eloquent\Builder|User
+     * @var ?User
      */
     public $user;
     /**
      *
-     * @var \Illuminate\Database\Eloquent\Builder|Label
+     * @var ?Label
      */
     public $label;
 
@@ -27,8 +27,8 @@ class LabelControllerTest extends TestCase
         $this->seed(StatusesTableSeeder::class);
         $this->seed(LabelsTableSeeder::class);
         $this->seed(TasksTableSeeder::class);
-        $this->user = User::first();
-        $this->label = Label::first();
+        $this->user = User::firstOrFail();
+        $this->label = Label::firstOrFail();
     }
 
     public function testIndex(): void
@@ -41,12 +41,17 @@ class LabelControllerTest extends TestCase
     {
         $response = $this->get(route('labels.create'));
         $response->assertForbidden();
+        self::assertTrue(isset($this->user));
         $response = $this->actingAs($this->user)->get(route('labels.create'));
         $response->assertOk();
     }
 
     public function testEdit(): void
     {
+        self::assertTrue(isset($this->user));
+        if (is_null($this->user)) {
+            return;
+        }
         $response = $this->get(route('labels.edit', 1));
         $response->assertForbidden();
         // with authentication
@@ -56,6 +61,10 @@ class LabelControllerTest extends TestCase
 
     public function testStore(): void
     {
+        self::assertTrue(isset($this->user));
+        if (is_null($this->user)) {
+            return;
+        }
         $data = ["name" => "testing"];
         $response = $this->post(route('labels.store'), $data);
         $response->assertSessionHasNoErrors();
@@ -70,6 +79,11 @@ class LabelControllerTest extends TestCase
 
     public function testUpdate(): void
     {
+        self::assertTrue(isset($this->label));
+        self::assertTrue(isset($this->user));
+        if (is_null($this->label) || is_null($this->user)) {
+            return;
+        }
         $this->label->name = 'testing';
         $data = $this->label->only("name", "description");
         $response = $this->patch(route('labels.update', $this->label), $data);
@@ -85,6 +99,11 @@ class LabelControllerTest extends TestCase
 
     public function testDestroy(): void
     {
+        self::assertTrue(isset($this->label));
+        self::assertTrue(isset($this->user));
+        if (is_null($this->label) || is_null($this->user)) {
+            return;
+        }
         $data = ['id' => $this->label->id];
         $response = $this->delete(route('labels.destroy', $this->label));
         $response->assertSessionHasNoErrors();
