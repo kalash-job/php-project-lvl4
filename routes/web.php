@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Response;
 use App\Http\Controllers\{StatusController, HomeController, TaskController, LabelController};
 
 /*
@@ -16,6 +15,9 @@ use App\Http\Controllers\{StatusController, HomeController, TaskController, Labe
 |
 */
 
+/**
+ * @return \Illuminate\Http\Response
+ */
 Route::get('/', function () {
     return response()->view('home.index');
 })->name('index');

@@ -12,13 +12,12 @@ class LabelControllerTest extends TestCase
 {
     /**
      *
-     * @property User|null
+     * @var User
      */
     public User $user;
-
     /**
      *
-     * @property Label|null
+     * @var Label
      */
     public Label $label;
 
