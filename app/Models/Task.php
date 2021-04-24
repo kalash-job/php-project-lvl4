@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Models\User|null $worker
  * @method static \Illuminate\Database\Eloquent\Builder|Task find($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Task first()
+ * @method static Task|null firstOrFail()
  * @method static \Illuminate\Database\Eloquent\Builder|Task newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Task newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Task query()

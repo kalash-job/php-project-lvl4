@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read int|null $tasks_count
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|Status first()
+ * @method static Status|null firstOrFail()
  * @method static \Illuminate\Database\Eloquent\Builder|Status newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Status newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Status pluck($valueFirst, $valueSecond)

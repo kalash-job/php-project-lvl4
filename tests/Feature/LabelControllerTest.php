@@ -39,9 +39,12 @@ class LabelControllerTest extends TestCase
 
     public function testCreate(): void
     {
+        self::assertTrue(isset($this->user));
+        if (is_null($this->user)) {
+            return;
+        }
         $response = $this->get(route('labels.create'));
         $response->assertForbidden();
-        self::assertTrue(isset($this->user));
         $response = $this->actingAs($this->user)->get(route('labels.create'));
         $response->assertOk();
     }

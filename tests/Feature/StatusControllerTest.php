@@ -9,13 +9,17 @@ use Database\Seeders\StatusesTableSeeder;
 
 class StatusControllerTest extends TestCase
 {
-    public User $user;
+    /**
+     *
+     * @var ?User
+     */
+    public $user;
 
     public function setUp(): void
     {
         parent::setUp();
         $this->seed(StatusesTableSeeder::class);
-        $this->user = User::first();
+        $this->user = User::firstOrFail();
     }
 
     public function testIndex(): void
@@ -26,6 +30,10 @@ class StatusControllerTest extends TestCase
 
     public function testCreate(): void
     {
+        self::assertTrue(isset($this->user));
+        if (is_null($this->user)) {
+            return;
+        }
         $response = $this->get(route('task_statuses.create'));
         $response->assertForbidden();
         // with authentication
@@ -35,6 +43,10 @@ class StatusControllerTest extends TestCase
 
     public function testEdit(): void
     {
+        self::assertTrue(isset($this->user));
+        if (is_null($this->user)) {
+            return;
+        }
         $response = $this->get(route('task_statuses.edit', 1));
         $response->assertForbidden();
         // with authentication
@@ -44,6 +56,10 @@ class StatusControllerTest extends TestCase
 
     public function testStore(): void
     {
+        self::assertTrue(isset($this->user));
+        if (is_null($this->user)) {
+            return;
+        }
         $data = ["name" => "test"];
         $response = $this->post(route('task_statuses.store'), $data);
         $response->assertSessionHasNoErrors();
@@ -58,7 +74,12 @@ class StatusControllerTest extends TestCase
 
     public function testUpdate(): void
     {
-        $status = Status::first();
+        $status = Status::firstOrFail();
+        self::assertTrue(isset($this->user));
+        self::assertTrue(isset($status));
+        if (is_null($this->user) || is_null($status)) {
+            return;
+        }
         $data = ['name' => 'test'];
         $response = $this->patch(route('task_statuses.update', $status->id), $data);
         $response->assertSessionHasNoErrors();
@@ -73,7 +94,12 @@ class StatusControllerTest extends TestCase
 
     public function testDestroy(): void
     {
-        $status = Status::first();
+        $status = Status::firstOrFail();
+        self::assertTrue(isset($this->user));
+        self::assertTrue(isset($status));
+        if (is_null($this->user) || is_null($status)) {
+            return;
+        }
         $data = ["name" => $status->name, 'id' => $status->id];
         $response = $this->delete(route('task_statuses.destroy', $status->id));
         $response->assertSessionHasNoErrors();

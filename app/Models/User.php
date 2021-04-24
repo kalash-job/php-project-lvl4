@@ -31,6 +31,7 @@ use Illuminate\Notifications\Notifiable;
  * @property-read int|null $tasks_created_by_me_count
  * @method static \Illuminate\Database\Eloquent\Builder|User create($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User find($value)
+ * @method static User|null findOrFail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User first()
  * @method static User|null firstOrFail()
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
