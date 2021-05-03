@@ -105,9 +105,8 @@ class TaskController extends Controller
         $this->authorize('update', $task);
         $task->fill($request->all());
         $task->save();
-        if (isset($request->labels[0])) {
-            $task->labels()->sync($request->labels);
-        }
+        $labels = isset($request->labels[0]) ? $request->labels : [];
+        $task->labels()->sync($labels);
         flash(__('messages.taskWasUpdated'), 'success');
         return redirect()->route('tasks.index');
     }
@@ -121,6 +120,7 @@ class TaskController extends Controller
     public function destroy(Task $task)
     {
         $this->authorize('delete', $task);
+        $task->labels()->detach();
         $task->delete();
         flash(__('messages.taskWasDeleted'), 'success');
         return redirect()->route('tasks.index');

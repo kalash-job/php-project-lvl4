@@ -10,6 +10,7 @@ setup:
 	npm install
 
 test:
+	php artisan config:clear
 	php artisan test
 
 deploy:
