@@ -10,7 +10,6 @@ use Illuminate\Notifications\Notifiable;
 /**
  * App\Models\User
  *
- * @method \Illuminate\Database\Query\Builder labels()
  * @property int $id
  * @property string $name
  * @property string $email

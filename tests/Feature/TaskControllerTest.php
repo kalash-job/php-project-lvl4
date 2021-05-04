@@ -10,26 +10,26 @@ class TaskControllerTest extends TestCase
 {
     /**
      *
-     * @var ?User
+     * @var User
      */
     public $user;
 
     /**
      *
-     * @var ?Task
+     * @var Task
      */
     public $task;
 
     /**
      *
-     * @var ?array
+     * @var array
      */
     public $data;
 
     public function setUp(): void
     {
         parent::setUp();
-        Task::factory()->count(20)->create()->each(function ($task) {
+        Task::factory()->count(20)->create()->each(function ($task): void {
             $task->labels()->sync([0 => Label::factory()->create()->id]);
         });
         $this->user = User::factory()->create();
