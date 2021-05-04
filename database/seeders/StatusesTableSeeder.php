@@ -16,7 +16,6 @@ class StatusesTableSeeder extends Seeder
     public function run()
     {
         $user = User::factory()->create();
-        $user->save();
 
         $statuses = [
             'новый',
