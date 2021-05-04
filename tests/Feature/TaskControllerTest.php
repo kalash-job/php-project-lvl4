@@ -29,9 +29,6 @@ class TaskControllerTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        Task::factory()->count(20)->create()->each(function ($task): void {
-            $task->labels()->sync([0 => Label::factory()->create()->id]);
-        });
         $this->user = User::factory()->create();
         $this->task = Task::factory()->create(['created_by_id' => $this->user->id]);
         $this->data = $this->task->only(['id', 'name', "description", "status_id", "assigned_to_id"]);
@@ -40,6 +37,9 @@ class TaskControllerTest extends TestCase
 
     public function testIndex(): void
     {
+        Task::factory()->count(20)->create()->each(function ($task): void {
+            $task->labels()->sync([0 => Label::factory()->create()->id]);
+        });
         $response = $this->get(route('tasks.index'));
         $response->assertOk();
     }
@@ -85,8 +85,7 @@ class TaskControllerTest extends TestCase
 
     public function testUpdate(): void
     {
-        $this->task->name = 'testing';
-        $newData = $this->task->only("name", "description", "status_id", "assigned_to_id", "created_by_id");
+        $newData = array_merge($this->data, ['name' => 'testing']);
         $response = $this->patch(route('tasks.update', $this->task), $newData);
         $response->assertSessionHasNoErrors();
         $response->assertForbidden();

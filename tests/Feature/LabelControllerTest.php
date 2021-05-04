@@ -12,37 +12,38 @@ class LabelControllerTest extends TestCase
 {
     /**
      *
-     * @var ?User
+     * @var User
      */
     public $user;
     /**
      *
-     * @var ?Label
+     * @var Label
      */
     public $label;
+
+    /**
+     *
+     * @var array
+     */
+    public $data;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->seed(StatusesTableSeeder::class);
-        $this->seed(LabelsTableSeeder::class);
-        $this->seed(TasksTableSeeder::class);
-        $this->user = User::firstOrFail();
-        $this->label = Label::firstOrFail();
+        $this->user = User::factory()->create();
+        $this->label = Label::factory()->create(['user_id' => $this->user->id]);
+        $this->data = $this->label->only(['id', 'name', "user_id", 'description']);
     }
 
     public function testIndex(): void
     {
+        $this->label = Label::factory()->count(10)->create();
         $response = $this->get(route('labels.index'));
         $response->assertOk();
     }
 
     public function testCreate(): void
     {
-        self::assertTrue(isset($this->user));
-        if (is_null($this->user)) {
-            return;
-        }
         $response = $this->get(route('labels.create'));
         $response->assertForbidden();
         $response = $this->actingAs($this->user)->get(route('labels.create'));
@@ -51,24 +52,16 @@ class LabelControllerTest extends TestCase
 
     public function testEdit(): void
     {
-        self::assertTrue(isset($this->user));
-        if (is_null($this->user)) {
-            return;
-        }
-        $response = $this->get(route('labels.edit', 1));
+        $response = $this->get(route('labels.edit', $this->label));
         $response->assertForbidden();
         // with authentication
-        $response = $this->actingAs($this->user)->get(route('labels.edit', 1));
+        $response = $this->actingAs($this->user)->get(route('labels.edit', $this->label));
         $response->assertOk();
     }
 
     public function testStore(): void
     {
-        self::assertTrue(isset($this->user));
-        if (is_null($this->user)) {
-            return;
-        }
-        $data = ["name" => "testing"];
+        $data = Label::factory()->make(['user_id' => $this->user->id])->toArray();
         $response = $this->post(route('labels.store'), $data);
         $response->assertSessionHasNoErrors();
         $response->assertForbidden();
@@ -82,40 +75,28 @@ class LabelControllerTest extends TestCase
 
     public function testUpdate(): void
     {
-        self::assertTrue(isset($this->label));
-        self::assertTrue(isset($this->user));
-        if (is_null($this->label) || is_null($this->user)) {
-            return;
-        }
-        $this->label->name = 'testing';
-        $data = $this->label->only("name", "description");
-        $response = $this->patch(route('labels.update', $this->label), $data);
+        $newData = array_merge($this->data, ['name' => 'testing']);
+        $response = $this->patch(route('labels.update', $this->label), $newData);
         $response->assertSessionHasNoErrors();
         $response->assertForbidden();
-        $this->assertDatabaseMissing('labels', $data);
+        $this->assertDatabaseMissing('labels', $newData);
         // with authentication
-        $response = $this->actingAs($this->user)->patch(route('labels.update', $this->label), $data);
+        $response = $this->actingAs($this->user)->patch(route('labels.update', $this->label), $newData);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
-        $this->assertDatabaseHas('labels', $data);
+        $this->assertDatabaseHas('labels', $newData);
     }
 
     public function testDestroy(): void
     {
-        self::assertTrue(isset($this->label));
-        self::assertTrue(isset($this->user));
-        if (is_null($this->label) || is_null($this->user)) {
-            return;
-        }
-        $data = ['id' => $this->label->id];
         $response = $this->delete(route('labels.destroy', $this->label));
         $response->assertSessionHasNoErrors();
         $response->assertForbidden();
-        $this->assertDatabaseHas('labels', $data);
+        $this->assertDatabaseHas('labels', $this->data);
         // with authentication
-        $response = $this->actingAs($this->user)->delete(route('labels.destroy', $this->label->id));
+        $response = $this->actingAs($this->user)->delete(route('labels.destroy', $this->label));
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
-        $this->assertDatabaseMissing('labels', $data);
+        $this->assertDatabaseMissing('labels', $this->data);
     }
 }

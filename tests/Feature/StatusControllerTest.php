@@ -11,29 +11,39 @@ class StatusControllerTest extends TestCase
 {
     /**
      *
-     * @var ?User
+     * @var User
      */
     public $user;
+
+    /**
+     *
+     * @var Status
+     */
+    public $status;
+
+    /**
+     *
+     * @var array
+     */
+    public $data;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->seed(StatusesTableSeeder::class);
-        $this->user = User::firstOrFail();
+        $this->user = User::factory()->create();
+        $this->status = Status::factory()->create(['user_id' => $this->user->id]);
+        $this->data = $this->status->only(['id', 'name', "user_id"]);
     }
 
     public function testIndex(): void
     {
+        Status::factory()->count(10)->create();
         $response = $this->get(route('task_statuses.index'));
         $response->assertOk();
     }
 
     public function testCreate(): void
     {
-        self::assertTrue(isset($this->user));
-        if (is_null($this->user)) {
-            return;
-        }
         $response = $this->get(route('task_statuses.create'));
         $response->assertForbidden();
         // with authentication
@@ -43,24 +53,16 @@ class StatusControllerTest extends TestCase
 
     public function testEdit(): void
     {
-        self::assertTrue(isset($this->user));
-        if (is_null($this->user)) {
-            return;
-        }
-        $response = $this->get(route('task_statuses.edit', 1));
+        $response = $this->get(route('task_statuses.edit', $this->status));
         $response->assertForbidden();
         // with authentication
-        $response = $this->actingAs($this->user)->get(route('task_statuses.edit', 1));
+        $response = $this->actingAs($this->user)->get(route('task_statuses.edit', $this->status));
         $response->assertOk();
     }
 
     public function testStore(): void
     {
-        self::assertTrue(isset($this->user));
-        if (is_null($this->user)) {
-            return;
-        }
-        $data = ["name" => "test"];
+        $data = Status::factory()->make(['user_id' => $this->user->id])->toArray();
         $response = $this->post(route('task_statuses.store'), $data);
         $response->assertSessionHasNoErrors();
         $response->assertForbidden();
@@ -74,39 +76,28 @@ class StatusControllerTest extends TestCase
 
     public function testUpdate(): void
     {
-        $status = Status::firstOrFail();
-        self::assertTrue(isset($this->user));
-        if (is_null($this->user)) {
-            return;
-        }
-        $data = ['name' => 'test'];
-        $response = $this->patch(route('task_statuses.update', $status->id), $data);
+        $newData = array_merge($this->data, ['name' => 'test']);
+        $response = $this->patch(route('task_statuses.update', $this->status), $newData);
         $response->assertSessionHasNoErrors();
         $response->assertStatus(419);
-        $this->assertDatabaseMissing('statuses', $data);
+        $this->assertDatabaseMissing('statuses', $newData);
         // with authentication
-        $response = $this->actingAs($this->user)->patch(route('task_statuses.update', $status), $data);
+        $response = $this->actingAs($this->user)->patch(route('task_statuses.update', $this->status), $newData);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
-        $this->assertDatabaseHas('statuses', $data);
+        $this->assertDatabaseHas('statuses', $newData);
     }
 
     public function testDestroy(): void
     {
-        $status = Status::firstOrFail();
-        self::assertTrue(isset($this->user));
-        if (is_null($this->user)) {
-            return;
-        }
-        $data = ["name" => $status->name, 'id' => $status->id];
-        $response = $this->delete(route('task_statuses.destroy', $status->id));
+        $response = $this->delete(route('task_statuses.destroy', $this->status));
         $response->assertSessionHasNoErrors();
         $response->assertStatus(419);
-        $this->assertDatabaseHas('statuses', $data);
+        $this->assertDatabaseHas('statuses', $this->data);
         // with authentication
-        $response = $this->actingAs($this->user)->delete(route('task_statuses.destroy', $status));
+        $response = $this->actingAs($this->user)->delete(route('task_statuses.destroy', $this->status));
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
-        $this->assertDatabaseMissing('statuses', $status->toArray());
+        $this->assertDatabaseMissing('statuses', $this->data);
     }
 }
