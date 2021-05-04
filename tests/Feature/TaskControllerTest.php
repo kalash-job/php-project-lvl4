@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Models\{User, Task};
+use App\Models\{User, Task, Label};
 use Tests\TestCase;
 use Database\Seeders\{StatusesTableSeeder, TasksTableSeeder};
 
@@ -20,13 +20,22 @@ class TaskControllerTest extends TestCase
      */
     public $task;
 
+    /**
+     *
+     * @var ?array
+     */
+    public $data;
+
     public function setUp(): void
     {
         parent::setUp();
-        $this->seed(StatusesTableSeeder::class);
-        $this->seed(TasksTableSeeder::class);
-        $this->user = User::findOrFail(2);
-        $this->task = Task::firstOrFail();
+        Task::factory()->count(20)->create()->each(function ($task) {
+            $task->labels()->sync([0 => Label::factory()->create()->id]);
+        });
+        $this->user = User::factory()->create();
+        $this->task = Task::factory()->create(['created_by_id' => $this->user->id]);
+        $this->data = $this->task->only(['id', 'name', "description", "status_id", "assigned_to_id"]);
+        $this->task->labels()->sync([0 => Label::factory()->create()->id]);
     }
 
     public function testIndex(): void
@@ -37,20 +46,12 @@ class TaskControllerTest extends TestCase
 
     public function testShow(): void
     {
-        self::assertTrue(isset($this->task));
-        if (is_null($this->task)) {
-            return;
-        }
         $response = $this->get(route('tasks.show', $this->task));
         $response->assertOk();
     }
 
     public function testCreate(): void
     {
-        self::assertTrue(isset($this->user));
-        if (is_null($this->user)) {
-            return;
-        }
         $response = $this->get(route('tasks.create'));
         $response->assertForbidden();
         // with authentication
@@ -60,24 +61,17 @@ class TaskControllerTest extends TestCase
 
     public function testEdit(): void
     {
-        self::assertTrue(isset($this->user));
-        if (is_null($this->user)) {
-            return;
-        }
-        $response = $this->get(route('tasks.edit', 1));
+        $response = $this->get(route('tasks.edit', $this->task));
         $response->assertForbidden();
         // with authentication
-        $response = $this->actingAs($this->user)->get(route('tasks.edit', 1));
+        $response = $this->actingAs($this->user)->get(route('tasks.edit', $this->task));
         $response->assertOk();
     }
 
     public function testStore(): void
     {
-        self::assertTrue(isset($this->user));
-        if (is_null($this->user)) {
-            return;
-        }
-        $data = ["name" => "testing", 'created_by_id' => 2, 'assigned_to_id' => 1, 'status_id' => 1];
+        $data = Task::factory()->make(['created_by_id' => $this->user->id])->toArray();
+
         $response = $this->post(route('tasks.store'), $data);
         $response->assertSessionHasNoErrors();
         $response->assertForbidden();
@@ -91,46 +85,38 @@ class TaskControllerTest extends TestCase
 
     public function testUpdate(): void
     {
-        self::assertTrue(isset($this->user));
-        self::assertTrue(isset($this->task));
-        if (is_null($this->user) || is_null($this->task)) {
-            return;
-        }
         $this->task->name = 'testing';
-        $data = $this->task->only("name", "description", "status_id", "assigned_to_id", "created_by_id");
-        $response = $this->patch(route('tasks.update', $this->task), $data);
+        $newData = $this->task->only("name", "description", "status_id", "assigned_to_id", "created_by_id");
+        $response = $this->patch(route('tasks.update', $this->task), $newData);
         $response->assertSessionHasNoErrors();
         $response->assertForbidden();
-        $this->assertDatabaseMissing('tasks', $data);
+        $this->assertDatabaseMissing('tasks', $newData);
         // with authentication
-        $response = $this->actingAs($this->user)->patch(route('tasks.update', $this->task), $data);
+        $response = $this->actingAs($this->user)->patch(route('tasks.update', $this->task), $newData);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
-        $this->assertDatabaseHas('tasks', $data);
+        $this->assertDatabaseHas('tasks', $newData);
     }
 
     public function testDestroy(): void
     {
-        self::assertTrue(isset($this->user));
-        self::assertTrue(isset($this->task));
-        if (is_null($this->user) || is_null($this->task)) {
-            return;
-        }
-        $data = ['id' => $this->task->id];
         $response = $this->delete(route('tasks.destroy', $this->task->id));
         $response->assertSessionHasNoErrors();
         $response->assertForbidden();
-        $this->assertDatabaseHas('tasks', $data);
+        $this->assertDatabaseHas('tasks', $this->data);
         // with authorization (user is not creator)
-        $task = Task::findOrFail(3);
+        $task = Task::factory()->create();
+        $data = $task->only(['id', 'name']);
+
         $response = $this->actingAs($this->user)->delete(route('tasks.destroy', $task->id));
         $response->assertSessionHasNoErrors();
         $response->assertForbidden();
         $this->assertDatabaseHas('tasks', $data);
+
         // with authentication (user is creator)
         $response = $this->actingAs($this->user)->delete(route('tasks.destroy', $this->task));
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
-        $this->assertDatabaseMissing('tasks', $data);
+        $this->assertDatabaseMissing('tasks', $this->data);
     }
 }

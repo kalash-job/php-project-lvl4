@@ -15,7 +15,6 @@
     <file>database</file>
     <rule ref="PSR12">
     </rule>
-    <rule ref="PSR1.Classes.ClassDeclaration.MissingNamespace"></rule>
     <rule ref="Generic.ControlStructures.InlineControlStructure">
         <properties>
             <property name="error" value="true"/>
