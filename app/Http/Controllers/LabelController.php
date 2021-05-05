@@ -8,6 +8,16 @@ use App\Http\Requests\LabelRequest;
 class LabelController extends Controller
 {
     /**
+     * Create the controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(Label::class, 'label');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -25,7 +35,7 @@ class LabelController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', Label::class);
+        //$this->authorize('create', Label::class);
         $label = new Label();
         return response()->view('label.create', compact('label'));
     }
@@ -38,7 +48,7 @@ class LabelController extends Controller
      */
     public function store(LabelRequest $request)
     {
-        $this->authorize('create', Label::class);
+        //$this->authorize('create', Label::class);
         $user = auth()->user();
         $user->labels()->create($request->all());
         flash(__('messages.labelWasCreated'), 'success');
@@ -53,7 +63,7 @@ class LabelController extends Controller
      */
     public function edit(Label $label)
     {
-        $this->authorize('update', $label);
+        //$this->authorize('update', $label);
         return response()->view('label.edit', compact('label'));
     }
 
@@ -66,7 +76,7 @@ class LabelController extends Controller
      */
     public function update(LabelRequest $request, Label $label)
     {
-        $this->authorize('update', $label);
+        //$this->authorize('update', $label);
         $user = auth()->user();
         $label->user()->associate($user);
         $label->fill($request->all());
@@ -83,7 +93,7 @@ class LabelController extends Controller
      */
     public function destroy(Label $label)
     {
-        $this->authorize('delete', $label);
+        //$this->authorize('delete', $label);
         if ($label->tasks->isNotEmpty()) {
             flash(__('messages.labelWasNotDeleted'), 'danger');
         } else {
