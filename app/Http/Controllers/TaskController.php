@@ -3,18 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Models\{Label, Status, Task, User};
-use Illuminate\Http\Request;
 use App\Http\Requests\TaskRequest;
-use Illuminate\Support\Facades\Auth;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Http\RedirectResponse;
 
 class TaskController extends Controller
 {
     /**
+     * Create the controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(Task::class, 'task');
+    }
+
+    /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index(Request $request)
     {
@@ -36,11 +47,10 @@ class TaskController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
-        $this->authorize('create', Task::class);
         $task = new Task();
         $statuses = Status::getStatusesForForm();
         $workers = User::getWorkersForForm();
@@ -52,11 +62,10 @@ class TaskController extends Controller
      * Store a newly created resource in storage.
      *
      * @param TaskRequest $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function store(TaskRequest $request)
     {
-        $this->authorize('create', Task::class);
         $user = auth()->user();
         $task = $user->tasksCreatedByMe()->make($request->except('labels'));
         $task->save();
@@ -70,8 +79,8 @@ class TaskController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\Task $task
-     * @return \Illuminate\Http\Response
+     * @param Task $task
+     * @return Response
      */
     public function show(Task $task)
     {
@@ -81,12 +90,11 @@ class TaskController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Models\Task $task
-     * @return \Illuminate\Http\Response
+     * @param Task $task
+     * @return Response
      */
     public function edit(Task $task)
     {
-        $this->authorize('update', $task);
         $statuses = Status::getStatusesForForm();
         $workers = User::getWorkersForForm();
         $labels = Label::getLabelsForForm();
@@ -97,12 +105,11 @@ class TaskController extends Controller
      * Update the specified resource in storage.
      *
      * @param TaskRequest $request
-     * @param \App\Models\Task $task
-     * @return \Illuminate\Http\RedirectResponse
+     * @param Task $task
+     * @return RedirectResponse
      */
     public function update(TaskRequest $request, Task $task)
     {
-        $this->authorize('update', $task);
         $task->fill($request->all());
         $task->save();
         $labels = isset($request->labels[0]) ? $request->labels : [];
@@ -114,12 +121,11 @@ class TaskController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Task $task
-     * @return \Illuminate\Http\RedirectResponse
+     * @param Task $task
+     * @return RedirectResponse
      */
     public function destroy(Task $task)
     {
-        $this->authorize('delete', $task);
         $task->labels()->detach();
         $task->delete();
         flash(__('messages.taskWasDeleted'), 'success');
