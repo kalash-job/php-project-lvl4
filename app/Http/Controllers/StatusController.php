@@ -3,16 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Status;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StatusRequest;
+use Illuminate\Http\Response;
+use Illuminate\Http\RedirectResponse;
 
 class StatusController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -23,7 +23,7 @@ class StatusController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -36,7 +36,7 @@ class StatusController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  StatusRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function store(StatusRequest $request)
     {
@@ -51,8 +51,8 @@ class StatusController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Status  $task_status
-     * @return \Illuminate\Http\Response
+     * @param  Status  $task_status
+     * @return Response
      */
     public function edit(Status $task_status)
     {
@@ -65,8 +65,8 @@ class StatusController extends Controller
      * Update the specified resource in storage.
      *
      * @param  StatusRequest  $request
-     * @param  \App\Models\Status  $task_status
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  Status  $task_status
+     * @return RedirectResponse
      */
     public function update(StatusRequest $request, Status $task_status)
     {
@@ -87,8 +87,8 @@ class StatusController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Status  $task_status
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  Status  $task_status
+     * @return RedirectResponse
      */
     public function destroy(Status $task_status)
     {
