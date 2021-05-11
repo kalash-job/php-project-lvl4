@@ -3,7 +3,7 @@
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/kalash-job/php-project-lvl4/workflows/hexlet-check/badge.svg)](https://github.com/kalash-job/php-project-lvl4/actions)
 
-![Page-Analyzer-Github-phpActions](https://github.com/kalash-job/php-project-lvl4/workflows/Task-manager-Github-phpActions/badge.svg)
+[![Page-Analyzer-Github-phpActions](https://github.com/kalash-job/php-project-lvl4/workflows/Task-manager-Github-phpActions/badge.svg)](https://github.com/kalash-job/php-project-lvl4/actions)
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/058cae25bf5f82a7cc82/maintainability)](https://codeclimate.com/github/kalash-job/php-project-lvl4/maintainability)
 
