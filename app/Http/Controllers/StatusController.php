@@ -10,6 +10,16 @@ use Illuminate\Http\RedirectResponse;
 class StatusController extends Controller
 {
     /**
+     * Create the controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(Status::class, 'task_status');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return Response
@@ -27,7 +37,6 @@ class StatusController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', Status::class);
         $status = new Status();
         return response()->view('status.create', compact('status'));
     }
@@ -40,7 +49,6 @@ class StatusController extends Controller
      */
     public function store(StatusRequest $request)
     {
-        $this->authorize('create', Status::class);
         $user = auth()->user();
         $status = $user->statuses()->make($request->all());
         $status->save();
@@ -56,7 +64,6 @@ class StatusController extends Controller
      */
     public function edit(Status $task_status)
     {
-        $this->authorize('update', $task_status);
         $status = $task_status;
         return response()->view('status.edit', compact('status'));
     }
@@ -71,12 +78,6 @@ class StatusController extends Controller
     public function update(StatusRequest $request, Status $task_status)
     {
         $user = auth()->user();
-        if (is_null($user)) {
-            abort(419);
-        }
-        if ($request->user()->cannot('update', $task_status)) {
-            abort(403);
-        }
         $task_status->user()->associate($user);
         $task_status->fill($request->all());
         $task_status->save();
@@ -92,18 +93,12 @@ class StatusController extends Controller
      */
     public function destroy(Status $task_status)
     {
-        $user = auth()->user();
-        if (is_null($user)) {
-            abort(419);
-        }
-        if ($user->cannot('delete', $task_status)) {
-            flash(__('messages.statusWasNotDeleted'), 'danger');
-        } elseif ($task_status->tasks->isNotEmpty()) {
+        if ($task_status->tasks()->exists()) {
             flash(__('messages.statusWasNotDeleted'), 'danger');
         } else {
             $task_status->delete();
             flash(__('messages.statusWasDeleted'), 'success');
         }
-        return redirect()->route('task_statuses.index');
+        return back();
     }
 }

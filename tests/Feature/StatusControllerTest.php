@@ -79,7 +79,7 @@ class StatusControllerTest extends TestCase
         $newData = array_merge($this->data, ['name' => 'test']);
         $response = $this->patch(route('task_statuses.update', $this->status), $newData);
         $response->assertSessionHasNoErrors();
-        $response->assertStatus(419);
+        $response->assertStatus(403);
         $this->assertDatabaseMissing('statuses', $newData);
         // with authentication
         $response = $this->actingAs($this->user)->patch(route('task_statuses.update', $this->status), $newData);
@@ -92,7 +92,7 @@ class StatusControllerTest extends TestCase
     {
         $response = $this->delete(route('task_statuses.destroy', $this->status));
         $response->assertSessionHasNoErrors();
-        $response->assertStatus(419);
+        $response->assertStatus(403);
         $this->assertDatabaseHas('statuses', $this->data);
         // with authentication
         $response = $this->actingAs($this->user)->delete(route('task_statuses.destroy', $this->status));
