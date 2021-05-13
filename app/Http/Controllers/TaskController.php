@@ -129,6 +129,6 @@ class TaskController extends Controller
         $task->labels()->detach();
         $task->delete();
         flash(__('messages.taskWasDeleted'), 'success');
-        return redirect()->route('tasks.index');
+        return back();
     }
 }

@@ -97,6 +97,6 @@ class LabelController extends Controller
             $label->delete();
             flash(__('messages.labelWasDeleted'), 'success');
         }
-        return redirect()->route('labels.index');
+        return back();
     }
 }
