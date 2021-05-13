@@ -45,4 +45,5 @@
             @endforeach
         @endif
     </table>
+    {{ $statuses->links() }}
 @endsection

@@ -20,13 +20,20 @@ class StatusController extends Controller
     }
 
     /**
+     * How many entities per page.
+     *
+     * @var integer
+     */
+    private $perPage = 15;
+
+    /**
      * Display a listing of the resource.
      *
      * @return Response
      */
     public function index()
     {
-        $statuses = Status::all();
+        $statuses = Status::paginate($this->perPage);
         return response()->view('status.index', compact('statuses'));
     }
 

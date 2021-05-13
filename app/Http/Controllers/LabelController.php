@@ -20,13 +20,20 @@ class LabelController extends Controller
     }
 
     /**
+     * How many entities per page.
+     *
+     * @var integer
+     */
+    private $perPage = 15;
+
+    /**
      * Display a listing of the resource.
      *
      * @return Response
      */
     public function index()
     {
-        $labels = Label::all();
+        $labels = Label::paginate($this->perPage);
         return response()->view('label.index', compact('labels'));
     }
 

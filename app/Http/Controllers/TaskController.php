@@ -23,6 +23,13 @@ class TaskController extends Controller
     }
 
     /**
+     * How many entities per page.
+     *
+     * @var integer
+     */
+    private $perPage = 15;
+
+    /**
      * Display a listing of the resource.
      *
      * @return Response
@@ -36,7 +43,7 @@ class TaskController extends Controller
                 AllowedFilter::exact('assigned_to_id'),
             ])
             ->with(['status', 'creator', 'worker'])
-            ->get();
+            ->paginate($this->perPage);
         $filter = $request->filter;
         $statuses = Status::getStatusesForForm();
         $workers = User::getWorkersForForm();

@@ -72,4 +72,5 @@
             @endforeach
         @endif
     </table>
+    {{ $tasks->appends(\Request::except('page'))->links() }}
 @endsection
